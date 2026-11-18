@@ -25,14 +25,34 @@ up later (any Claude account, ChatGPT, Gemini, Cursor...), read this first.
 
 No build step, no framework, no server. Any push to `main` goes live in about a minute.
 
-## 2. How to update content (owner, no code)
+## 2. How to edit and update the portfolio
 
-1. Open `/edit.html` on the live site. The form loads what is live.
-2. Edit. Work autosaves in that browser (localStorage key `content-draft`).
-3. **Preview** opens `/?preview`, the real site using the draft. Only that browser sees it.
-4. **Copy content**, then **Open on GitHub** (opens `content.js` in GitHub's editor). Select all, paste, **Commit changes**.
+### A. Text, numbers, projects, jobs, tasks: use the editor (no code)
+1. Open **https://sksahil03.github.io/edit.html** on a laptop. The form loads what is live.
+2. Change anything. **Add a project / job / task** for new items, **Remove** to delete. Work autosaves in that browser (localStorage key `content-draft`) until it is committed.
+3. **Preview** opens `/?preview`: the real site with the draft. Only that browser sees it.
+4. **Copy content**, then **Open on GitHub** (opens `content.js` in GitHub's editor, signed in as `sksahil03`).
+5. Click in the file, **Ctrl+A**, **Ctrl+V**, then **Commit changes**.
+6. Wait about 1 minute and refresh the site (**Ctrl+Shift+R** if the old version still shows).
 
-By hand: edit `content.js` on GitHub (pencil icon) and commit.
+Each new project automatically becomes a satellite and a tour stop; empty sections stay hidden.
+By hand instead: open `content.js` on GitHub, pencil icon, edit, **Commit changes**.
+
+### B. Replace the résumé PDF
+GitHub repo, **Add file**, **Upload files**, drag the new PDF **renamed exactly `resume.pdf`**, **Commit changes**.
+(The owner chose to keep the phone number in the public résumé.)
+
+### C. Design changes or new features: ask an AI
+Open any AI (Claude on any account, ChatGPT, Gemini, Cursor) and say:
+> Read https://github.com/sksahil03/sksahil03.github.io, start with README.md. Then [what you want].
+
+### D. Undo a bad change
+GitHub repo, **Commits**, open the last good version, and restore it (or ask an AI to revert that commit).
+
+### E. Where things are stored
+- **Source of truth: GitHub** (the repo above). Everything live comes from there, safe if the laptop is lost.
+- Editor drafts: only in the browser that made them, until committed.
+- The original working copy from the first Claude session was in a temporary session folder; always clone or edit from GitHub.
 
 ### Content schema (`content.js`)
 ```
