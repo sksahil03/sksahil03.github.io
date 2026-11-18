@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Site editor</title>
+<meta name="description" content="Edit the content of the portfolio site and publish it to GitHub."><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · v2.0.0 · app screen: a form editor for the portfolio content · genre: modern-minimal · theme: custom, shares the portfolio tokens · signature: the three-step publish bar · material real: the live content.js */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, a plain form by design; the owner needs clarity here, not spectacle */
+:root{
+  --bg:#06080c; --bg2:#0b0f16; --panel:#0e131b; --panel2:#141a24;
+  --line:#1e2733; --line2:#2a3542; --ink:#e8edf3; --ink2:#a9b4c0; --muted:#7c8896;
+  --amber:#ffb020; --amber-2:#ffc554; --on-amber:#1c1200; --red:#ff5d5d; --green:#3ddc97;
+  --display:'Space Grotesk',system-ui,sans-serif; --body:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased;padding-bottom:120px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;transition:none}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px}
+h1{font:700 40px/1.1 var(--display);letter-spacing:-.02em;text-wrap:balance}
+h2{font:700 24px/1.2 var(--display);text-wrap:balance}
+.lead{color:var(--ink2);margin-top:8px}
+.how{margin-top:20px;display:grid;gap:8px;list-style:none;counter-reset:s}
+.how li{counter-increment:s;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px;color:var(--ink2)}
+.how li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--panel2);color:var(--amber);font:600 14px var(--body)}
+section{margin-top:24px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:24px}
+section > p{color:var(--muted);font-size:15px;margin:4px 0 16px}
+label{display:block;font:500 14px var(--body);color:var(--ink2);margin:12px 0 4px}
+input,textarea{width:100%;font:15px/1.5 var(--body);color:var(--ink);background:var(--bg2);border:1px solid var(--line2);border-radius:8px;padding:12px;outline:none;transition:border-color .2s}
+input:hover,textarea:hover{border-color:var(--muted)}
+input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+textarea{min-height:88px;resize:vertical}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.item{position:relative;border:1px solid var(--line2);border-radius:12px;padding:8px 16px 16px;margin-top:12px;background:var(--bg2)}
+.item .del{position:absolute;top:8px;right:8px;font:500 13px var(--body);color:var(--muted);padding:4px 8px;border-radius:8px}
+.item .del:hover{color:var(--red)}
+.item .del:active{transform:scale(.96)}
+.add{margin-top:12px;font:600 14px var(--body);color:var(--amber);padding:8px 12px;border:1px dashed var(--line2);border-radius:8px;width:100%}
+.add:hover{border-color:var(--amber)}
+.add:active{transform:translateY(1px)}
+.add:disabled{opacity:.4;cursor:not-allowed}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--panel2);border-top:1px solid var(--line2);padding:12px 20px}
+.bar .in{max-width:760px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);border-radius:999px;padding:12px 16px;font:600 14px var(--body);background:var(--panel);color:var(--ink);text-decoration:none;transition:border-color .15s,color .15s,background-color .15s}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.pri{background:var(--amber);border-color:var(--amber);color:var(--on-amber)}
+.btn.pri:hover{background:var(--amber-2);color:var(--on-amber)}
+.saved{margin-left:auto;font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--amber);border-radius:999px;padding:8px 16px;font-size:14px;transition:opacity .25s;pointer-events:none}
+.js .toast{opacity:0}
+.toast.on{opacity:1}
+@media (max-width:600px){ .two{grid-template-columns:minmax(0,1fr)} h1{font-size:32px} .saved{width:100%;margin:0} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+<div class="wrap">
+  <h1>Edit your site</h1>
+  <p class="lead">Fill in what you have. Empty sections stay hidden on the site.</p>
+  <ol class="how">
+    <li>Edit below. Your work saves in this browser as you type.</li>
+    <li>Press Preview to see it on the real site, only you can see a preview.</li>
+    <li>Press Copy content, then Open on GitHub. Select everything in the file, paste, and click Commit changes. Live in about a minute.</li>
+  </ol>
+
+  <section>
+    <h2>Basics</h2>
+    <p>Your name, your role and one line about what you do.</p>
+    <div class="two">
+      <div><label for="f-name">Full name</label><input id="f-name" data-k="name"></div>
+      <div><label for="f-brand">Short name, top left</label><input id="f-brand" data-k="brand"></div>
+    </div>
+    <label for="f-role">Role</label><input id="f-role" data-k="role">
+    <label for="f-tag">One line about what you do</label><input id="f-tag" data-k="tagline">
+    <label for="f-intro">About you, 2 or 3 lines</label><textarea id="f-intro" data-k="about.intro"></textarea>
+    <label for="f-skills">Skills, separated by commas</label><input id="f-skills" data-k="about.skills" data-type="tags" placeholder="Customer research, SQL, Dashboards">
+    <label for="f-cv">Résumé link (Google Drive or PDF)</label><input id="f-cv" data-k="about.resume" placeholder="https://">
+  </section>
+
+  <section><h2>Headline numbers</h2><p>Up to 3, shown big on the home screen.</p><div data-list="headline"></div></section>
+  <section><h2>What I do</h2><p>Your day-to-day tasks. Each one also becomes a stop on the tour.</p><div data-list="whatIDo"></div></section>
+  <section><h2>Projects</h2><p>Your best work. Each project becomes a satellite and a tour stop. A real number makes it land.</p><div data-list="projects"></div></section>
+  <section><h2>Journey</h2><p>Your jobs, newest first.</p><div data-list="journey"></div></section>
+  <section><h2>Reviews</h2><p>Real quotes only, with the person’s name.</p><div data-list="reviews"></div></section>
+  <section>
+    <h2>Contact</h2><p>Shown on the Contact section.</p>
+    <label for="f-mail">Email</label><input id="f-mail" data-k="contact.email" type="email">
+    <div data-list="contact.links"></div>
+  </section>
+</div>
+
+<div class="bar"><div class="in">
+  <button class="btn" id="preview">Preview</button>
+  <button class="btn pri" id="copy">Copy content</button>
+  <a class="btn" id="gh" target="_blank" rel="noopener">Open on GitHub</a>
+  <button class="btn" id="dl">Download file</button>
+  <button class="btn" id="reset">Start over from live</button>
+  <span class="saved" id="saved" role="status"></span>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="content.js"></script>
+<script>
+const LIVE = JSON.parse(JSON.stringify(window.CONTENT || {}));
+let D;
+try{ D = JSON.parse(localStorage.getItem("content-draft")) || null; }catch{ D=null; }
+if (!D) D = JSON.parse(JSON.stringify(LIVE));
+D.about = D.about || {intro:"",skills:[],resume:""}; D.contact = D.contact || {email:"",links:[]};
+["headline","whatIDo","projects","journey","reviews"].forEach(k=>D[k]=D[k]||[]); D.contact.links=D.contact.links||[];
+
+const LISTS = {
+  "headline": { one:"number", max:3, fields:[["value","Number","2.7 yrs"],["label","Label","Experience"]] },
+  "whatIDo":  { one:"task", fields:[["title","Task","Customer feedback analysis"],["detail","Details (optional)","Read and tag feedback weekly, share patterns with product","area"]] },
+  "projects": { one:"project", fields:[["name","Project name","Student churn study"],["type","Type","Research"],["result","Result, with a number","Churn down 12%"],["link","Link (optional)","https://"],["summary","One or two lines","What it was, what you did, what changed","area"],["tags","Tags, separated by commas","Survey, SQL","tags"]] },
+  "journey":  { one:"job", fields:[["company","Company","SciAstra"],["role","Role","Customer Insights Analyst"],["when","When","Now"],["years","How long","2.7 years"],["points","What you did there, one per line","","lines"]] },
+  "reviews":  { one:"review", fields:[["text","Quote","","area"],["who","Their name","Name Surname"],["rel","Who they are to you","Manager at SciAstra"]] },
+  "contact.links": { one:"link", fields:[["label","Name","LinkedIn"],["url","Address","https://"]] },
+};
+const get = (o,p) => p.split(".").reduce((a,k)=>a?.[k], o);
+const set = (o,p,v) => { const ks=p.split("."), last=ks.pop(); ks.reduce((a,k)=>a[k]??={}, o)[last]=v; };
+const esc = s => String(s??"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toVal = (type, raw) => type==="tags" ? raw.split(",").map(s=>s.trim()).filter(Boolean) : type==="lines" ? raw.split("\n").map(s=>s.trim()).filter(Boolean) : raw;
+const toRaw = (type, v) => type==="tags" ? (v||[]).join(", ") : type==="lines" ? (v||[]).join("\n") : (v??"");
+
+let saveT;
+function save(){ try{ localStorage.setItem("content-draft", JSON.stringify(D)); }catch{} clearTimeout(saveT); document.getElementById("saved").textContent="Saved in this browser"; saveT=setTimeout(()=>document.getElementById("saved").textContent="",1600); }
+
+document.querySelectorAll("[data-k]").forEach(el=>{
+  el.value = toRaw(el.dataset.type, get(D, el.dataset.k));
+  el.addEventListener("input", ()=>{ set(D, el.dataset.k, toVal(el.dataset.type, el.value)); save(); });
+});
+
+let uid=0;
+function renderList(path){
+  const box=document.querySelector(`[data-list="${path}"]`), spec=LISTS[path], arr=get(D,path);
+  box.innerHTML = arr.map((item,i)=>`<div class="item">
+      <button class="del" data-del="${i}" aria-label="Remove ${spec.one} ${i+1}">Remove</button>
+      <div class="two">${spec.fields.map(([k,lab,ph,type])=>{ const id="u"+(uid++); const wide = type==="area"||type==="lines";
+        return `<div style="${wide?"grid-column:1/-1":""}"><label for="${id}">${esc(lab)}</label>${wide?`<textarea id="${id}" data-f="${k}" data-type="${type||""}" data-i="${i}" placeholder="${esc(ph)}">${esc(toRaw(type,item[k]))}</textarea>`:`<input id="${id}" data-f="${k}" data-type="${type||""}" data-i="${i}" placeholder="${esc(ph)}" value="${esc(toRaw(type,item[k]))}">`}</div>`; }).join("")}</div>
+    </div>`).join("") + `<button class="add" data-add ${spec.max && arr.length>=spec.max?"disabled":""}>Add a ${spec.one}</button>`;
+  box.querySelectorAll("[data-f]").forEach(el=>el.addEventListener("input",()=>{ arr[+el.dataset.i][el.dataset.f]=toVal(el.dataset.type,el.value); save(); }));
+  box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ arr.splice(+b.dataset.del,1); save(); renderList(path); });
+  box.querySelector("[data-add]").onclick=()=>{ const o={}; spec.fields.forEach(([k,,,type])=>o[k]= type==="tags"||type==="lines" ? [] : ""); arr.push(o); save(); renderList(path); box.querySelectorAll(".item")[arr.length-1]?.querySelector("input,textarea")?.focus(); };
+}
+Object.keys(LISTS).forEach(renderList);
+
+function fileText(){
+  const clean = JSON.parse(JSON.stringify(D));
+  ["headline","whatIDo","projects","journey","reviews"].forEach(k=>clean[k]=clean[k].filter(o=>Object.values(o).some(v=>Array.isArray(v)?v.length:String(v).trim())));
+  clean.contact.links = clean.contact.links.filter(l=>l.url && l.url!=="https://");
+  return `/* =====================================================================
+   YOUR SITE CONTENT
+   Easiest way to change it: open  /edit.html  on your site.
+   Empty lists [] hide their section automatically.
+   ===================================================================== */
+window.CONTENT = ${JSON.stringify(clean,null,2)};
+`;
+}
+function toast(t){ const el=document.getElementById("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove("on"),2200); }
+
+const h=location.hostname, repo = h.endsWith(".github.io") ? `${h.split(".")[0]}/${h}` : "sksahil03/sksahil03.github.io";
+document.getElementById("gh").href = `https://github.com/${repo}/edit/main/content.js`;
+document.getElementById("preview").onclick=()=>{ save(); window.open("./?preview","_blank"); };
+document.getElementById("copy").onclick=()=>navigator.clipboard.writeText(fileText()).then(()=>toast("Copied. Now open on GitHub and paste over everything."),()=>toast("Copy failed, use Download file instead"));
+document.getElementById("dl").onclick=()=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([fileText()],{type:"text/javascript"})); a.download="content.js"; a.click(); URL.revokeObjectURL(a.href); };
+document.getElementById("reset").onclick=()=>{ if(!confirm("Throw away your unsaved edits and load what is live now?")) return; try{ localStorage.removeItem("content-draft"); }catch{} location.reload(); };
+</script>
+</body>
+</html>
